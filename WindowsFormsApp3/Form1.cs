@@ -20,8 +20,21 @@ namespace WindowsFormsApp3
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SpeechLib.SpVoice voice = new SpeechLib.SpVoice();
-            voice.Speak("test");
+            SpeechLib.SpVoiceClass voiceclass = new SpeechLib.SpVoiceClass();
+
+            foreach(ISpeechObjectToken outputs in voiceclass.GetAudioOutputs())
+            {
+                var t = outputs.GetDescription(49);
+                if (t.Contains("Porta")) voiceclass.AudioOutput = (SpObjectToken)outputs;
+            }
+
+            foreach (ISpeechObjectToken Token in voiceclass.GetVoices(string.Empty, string.Empty))
+            {
+                if (Token.GetDescription(49).Contains("David")) voiceclass.SetVoice((ISpObjectToken)Token);
+
+            }
+
+            voiceclass.Speak("test!");
         }
     }
 }
